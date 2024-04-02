@@ -3,6 +3,10 @@
   font-weight: bold;
   font-size: 12px;
 }
+.save-information-date {
+  font-weight: lighter;
+  text-transform: capitalize;
+}
 .save-information-loader {
   width: 48px;
   height: 18px;

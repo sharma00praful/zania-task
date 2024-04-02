@@ -4,13 +4,17 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
+import { useCallback } from "react";
 
 const SaveInformation = ({ lastSaved, isSaving }) => {
   const [difference, setDifference] = useState("");
 
-  const calculateDifference = (timeAgo) => {
-    setDifference(timeAgo.format(new Date(lastSaved)).toUpperCase());
-  };
+  const calculateDifference = useCallback(
+    (timeAgo) => {
+      setDifference(timeAgo.format(new Date(lastSaved)));
+    },
+    [lastSaved]
+  );
 
   useEffect(() => {
     TimeAgo.addLocale(en);
