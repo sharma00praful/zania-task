@@ -10,7 +10,7 @@ For the spinner I first used a gif background image to show until the image is l
 
 The Card component is a reusable React component designed to represent a card element with drag-and-drop functionality. It's intended to be used within a sortable list or grid, such as a Kanban board or a gallery. I have used useState for Image Loading State, useSortable (DND-KIT) for Drag-and-Drop Functionality and it handles two events one is for click and one is for drag.
 
-##Modal
+## Modal
 
 The component defines two event handlers: handleOutsideClick and handleBodyClick.
 The component utilizes the useEffect hook to add and remove a keydown event listener on the window object.
@@ -18,7 +18,7 @@ When the component mounts, it adds an event listener for the escape key (ESC_KEY
 When the component unmounts, it removes the event listener to prevent memory leaks.
 The component renders the children prop, allowing the parent component to provide custom content inside the modal.
 
-##CardsList
+## CardsList
 
 It utilizes the @dnd-kit/core and @dnd-kit/sortable libraries to implement drag-and-drop functionality seamlessly. The component utilizes the useSensors hook from @dnd-kit/core to create drag sensors. It uses a PointerSensor with an activation constraint to detect drag movements. 
 
