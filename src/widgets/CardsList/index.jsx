@@ -23,9 +23,6 @@ const CardsList = ({ cardsData, setCardsData, onCardClick, onChange }) => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 4 },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
