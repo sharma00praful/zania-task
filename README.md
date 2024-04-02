@@ -1,70 +1,26 @@
-# Getting Started with Create React App
+# Frontend Task Zania
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I have followed a bottom-up approach while designing the architecture of the app. First I have created the components like cards, spinner, modal and then use those components to create widgets like cardsList and SaveInfo. In the end I binded it up to a page called DragAndDropGridPage. 
 
-## Available Scripts
+## Spinner
 
-In the project directory, you can run:
+For the spinner I first used a gif background image to show until the image is loaded. As no extra code was required for the functionality. But I found that by doing this we are increasing the size of the project as we need to keep a gif within the project which will itself take some time to load. So I scrap that idea and created a universal spinner component which I used in multiple places. It contains the size prop so that we can make it small if we want. It can also take custom class name so that it can work fine in any location.
 
-### `npm start`
+## Cards
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The Card component is a reusable React component designed to represent a card element with drag-and-drop functionality. It's intended to be used within a sortable list or grid, such as a Kanban board or a gallery. I have used useState for Image Loading State, useSortable (DND-KIT) for Drag-and-Drop Functionality and it handles two events one is for click and one is for drag.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+##Modal
 
-### `npm test`
+The component defines two event handlers: handleOutsideClick and handleBodyClick.
+The component utilizes the useEffect hook to add and remove a keydown event listener on the window object.
+When the component mounts, it adds an event listener for the escape key (ESC_KEY_CODE) to trigger the onClose callback.
+When the component unmounts, it removes the event listener to prevent memory leaks.
+The component renders the children prop, allowing the parent component to provide custom content inside the modal.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+##CardsList
 
-### `npm run build`
+It utilizes the @dnd-kit/core and @dnd-kit/sortable libraries to implement drag-and-drop functionality seamlessly. The component utilizes the useSensors hook from @dnd-kit/core to create drag sensors. It uses a PointerSensor with an activation constraint to detect drag movements. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+##Use of MSW
+I used MSW to mock the get and post apis. Also added a small delay into it. 
