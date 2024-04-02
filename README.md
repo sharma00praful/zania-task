@@ -22,5 +22,5 @@ The component renders the children prop, allowing the parent component to provid
 
 It utilizes the @dnd-kit/core and @dnd-kit/sortable libraries to implement drag-and-drop functionality seamlessly. The component utilizes the useSensors hook from @dnd-kit/core to create drag sensors. It uses a PointerSensor with an activation constraint to detect drag movements. 
 
-##Use of MSW
+## Use of MSW
 I used MSW to mock the get and post apis. Also added a small delay into it. 
