@@ -29,7 +29,11 @@ const SaveInformation = ({ lastSaved, isSaving }) => {
   return (
     <div className="save-information-container">
       {isSaving ? (
-        <Spinner className="save-information-loader" sm />
+        <Spinner
+          className="save-information-loader"
+          sm
+          testid="save-information-spinner"
+        />
       ) : (
         <>
           <div className="save-information-title">LAST SAVED</div>

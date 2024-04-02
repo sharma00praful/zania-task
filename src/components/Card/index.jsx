@@ -40,8 +40,9 @@ const Card = ({ title, position, img, isGrabbing, onClick }) => {
       {...attributes}
     >
       <h2 className="card-title">{title}</h2>
-      {imageLoading && <Spinner className="card-loader" />}
+      {imageLoading && <Spinner className="card-loader" testid="card-loader" />}
       <img
+        data-testid="card-image"
         className="card-image"
         src={img}
         onLoad={handleImageLoad}

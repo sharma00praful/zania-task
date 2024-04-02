@@ -1,8 +1,11 @@
 import "./style.css";
-const Spinner = ({ className, sm }) => {
+const Spinner = ({ className, sm, testid = "spinner" }) => {
   return (
-    <div className={`${className ? className : ""}`}>
-      <div className={`spinner ${sm ? "spinner-sm" : "spinner-md"}`} />
+    <div className={`${className ? className : ""}`} data-testid={testid}>
+      <div
+        data-testid="spinner-body"
+        className={`spinner ${sm ? "spinner-sm" : "spinner-md"}`}
+      />
     </div>
   );
 };
