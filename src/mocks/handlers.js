@@ -1,13 +1,15 @@
 import { http, HttpResponse } from "msw";
 import { MOCK_DATA } from "./data/cards";
 
-const delay = (delayInms) => {
-  return new Promise((resolve) => setTimeout(resolve, delayInms));
+const delay = (delayInMS) => {
+  return new Promise((resolve) => setTimeout(resolve, delayInMS));
 };
 
 export const handlers = [
-  http.get("/api/get-cards", () => {
+  http.get("/api/get-cards", async () => {
     const previouslySaved = localStorage.getItem("previouslySavedCards");
+    //adding a realistic delay
+    await delay(500);
     return HttpResponse.json(
       previouslySaved
         ? JSON.parse(previouslySaved)
@@ -19,7 +21,7 @@ export const handlers = [
     const lastSavedAt = new Date();
     const data = { lastSavedAt: lastSavedAt, data: cardsList };
     localStorage.setItem("previouslySavedCards", JSON.stringify(data));
-    //adding a realistic delay for saving spinner to show
+    //adding a realistic delay
     await delay(500);
     return HttpResponse.json({ status: "success", lastSavedAt: lastSavedAt });
   }),
