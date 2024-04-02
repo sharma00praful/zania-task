@@ -1,59 +1,103 @@
 import { useState } from "react";
 import CardsList from "../widgets/CardsList";
 import Modal from "../components/Modal";
+import SaveInformation from "../widgets/SaveInformation";
+import Spinner from "../components/Spinner";
+import { useEffect } from "react";
 
 const DragAndDropGridPage = ({}) => {
   const [modalData, setModalData] = useState({ isVisible: false, img: "" });
+  const [cardsData, setCardsData] = useState(null);
+  const [lastSavedAt, setLastSavedAt] = useState("");
+  const [isUnsavedChanges, setIsUnsavedChanges] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleCardClick = (item) => {
     if (item?.thumbnail) {
       setModalData({ isVisible: true, img: item.thumbnail });
     }
   };
+
   const handleModalClose = () => {
     setModalData({ isVisible: false, img: "" });
   };
-  const DATA = [
-    {
-      type: "bank-draft",
-      title: "Bank Draft",
-      position: 0,
-      thumbnail:
-        "https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    },
-    {
-      type: "bill-of-lading",
-      title: "Bill of Lading",
-      position: 1,
-      thumbnail:
-        "https://static.scientificamerican.com/sciam/cache/file/F766A67E-A8AA-4C90-A929C9AC67075D4B_source.jpg?w=1200",
-    },
-    {
-      type: "invoice",
-      title: "Invoice",
-      position: 2,
-      thumbnail:
-        "https://bestfriends.org/sites/default/files/styles/hero_mobile/public/hero-dash/Asana3808_Dashboard_Standard.jpg?h=ebad9ecf&itok=cWevo33k",
-    },
-    {
-      type: "bank-draft-2",
-      title: "Bank Draft 2",
-      position: 3,
-      thumbnail:
-        "https://headsupfortails.com/cdn/shop/articles/Cat_s_Mind.jpg?v=1624444348",
-    },
-    {
-      type: "bill-of-lading-2",
-      title: "Bill of Lading 2",
-      position: 4,
-      thumbnail:
-        "https://t4.ftcdn.net/jpg/02/66/72/41/360_F_266724172_Iy8gdKgMa7XmrhYYxLCxyhx6J7070Pr8.jpg",
-    },
-  ];
+
+  const handleCardsListChange = () => {
+    setIsUnsavedChanges(true);
+  };
+
+  const fetchData = async () => {
+    fetch("/api/get-cards")
+      .then((response) => response.json())
+      .then((data) => {
+        setCardsData(data.data);
+        setLastSavedAt(data.lastSavedAt);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const postData = async () => {
+    setIsSaving(true);
+    setCardsData((prev) => {
+      const newCardsData = prev?.map((item, index) => {
+        return { ...item, position: index + 1 };
+      });
+      fetch("/api/set-cards", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: newCardsData }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data?.status === "success") setLastSavedAt(data.lastSavedAt);
+          else console.error("save failed");
+        })
+        .finally(() => {
+          setIsSaving(false);
+        })
+        .catch((error) => console.error(error));
+      return prev;
+    });
+  };
+
+  const autoSave = () => {
+    //to deal with stale closure we are using state setter function here
+    setIsUnsavedChanges((prev) => {
+      if (prev) {
+        postData();
+        return !prev;
+      } else return prev;
+    });
+  };
+
+  useEffect(() => {
+    fetchData();
+    const autoSaveInterval = setInterval(autoSave, 5000);
+    return () => clearInterval(autoSaveInterval);
+  }, []);
+
   return (
     <div className="page-container">
-      <h1 className="page-title">ZANIA FRONTEND ASSIGNMENT</h1>
-      <CardsList data={DATA} onCardClick={handleCardClick} />
+      <div className="page-header">
+        <h1 className="page-title">ZANIA FRONTEND ASSIGNMENT</h1>
+        {lastSavedAt ? (
+          <SaveInformation lastSaved={lastSavedAt} isSaving={isSaving} />
+        ) : null}
+      </div>
+      {cardsData ? (
+        <CardsList
+          cardsData={cardsData}
+          setCardsData={setCardsData}
+          onCardClick={handleCardClick}
+          onChange={handleCardsListChange}
+        />
+      ) : (
+        <Spinner className="page-loader" />
+      )}
+
       {modalData?.isVisible ? (
         <Modal onClose={handleModalClose}>
           <img src={modalData?.img} className="popup-image" />
@@ -62,5 +106,6 @@ const DragAndDropGridPage = ({}) => {
     </div>
   );
 };
+
 export default DragAndDropGridPage;
 

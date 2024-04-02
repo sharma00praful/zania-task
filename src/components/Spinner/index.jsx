@@ -1,8 +1,8 @@
 import "./style.css";
-const Spinner = ({}) => {
+const Spinner = ({ className, sm }) => {
   return (
-    <div className="spinner-container">
-      <div className="spinner" />
+    <div className={`${className ? className : ""}`}>
+      <div className={`spinner ${sm ? "spinner-sm" : "spinner-md"}`} />
     </div>
   );
 };
