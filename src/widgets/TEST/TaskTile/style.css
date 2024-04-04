@@ -1,0 +1,10 @@
+.task-tile-container {
+  display: flex;
+  justify-content: space-between;
+}
+.task-tile-box {
+  padding: 20px;
+  border: 1px solid black;
+  margin: 10px;
+}
+
